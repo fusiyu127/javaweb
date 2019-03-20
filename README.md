@@ -8,7 +8,7 @@
 
 ## 基本信息
 - 学号: 222016321072001
-- 网址: [StockAnalysis](39.106.102.184:8080/StockAnalysis)
+- 网址: [StockAnalysis](http://39.106.102.184:8080/StockAnalysis)
 
 
 ## 第一周完成内容
