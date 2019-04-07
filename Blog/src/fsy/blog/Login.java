@@ -1,10 +1,12 @@
 package fsy.blog;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,11 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
 
 import com.mysql.jdbc.Connection;
-
-import fsy.JdbcUtils.JdbcUtils;
 
 /**
  * Servlet implementation class Login
@@ -65,7 +64,29 @@ public class Login extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JdbcUtils.releaseConnection(con);
+
+			try {
+				if(resultSet != null)
+					resultSet.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+			
+			try {
+				if(statement != null)
+					statement.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+
+			try {
+				if(con != null)
+					con.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+
+		
 		}
 		
 	}
