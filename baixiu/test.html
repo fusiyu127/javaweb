@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <script src="static/assets/vendors/jquery/jquery-3.0.0.js"></script>
+    <script src="static/assets/vendors/layer/layer.js"></script>
+    <script>
+        $(function () {
+            layer.open({
+                type: 0,
+                title:'提示',
+                icon:1,
+                content: '文章发表成功' //这里content是一个普通的String
+            });
+
+            layer.open({
+                type: 0,
+                title:'提示',
+                icon:2,
+                content: '文章发表失败' //这里content是一个普通的String
+            });
+        })
+    </script>
+</body>
+</html>
