@@ -30,5 +30,10 @@
 - 网址：[baixiu](http:39.106.102.184/baixiu/admin/login.php)
 - 备注：登录用户名:admin@fsy.me,密码为：fusiyu
 
+## 第六周完成内容
+- 实现模仿阿里百秀前台展示页面
+- 网址：[baixiu](http:39.106.102.184/baixiu/index.html)
+- 备注：登录用户名:admin@fsy.me,密码为：fusiyu
+
 
 
