@@ -2,7 +2,6 @@
 require_once '../functions.php';
 get_cur_user();
 
-
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">

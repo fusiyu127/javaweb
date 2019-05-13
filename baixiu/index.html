@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-image: url("./static/assets/img/bg.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #login {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 1.5em;
+            color: #fefefe;
+            overflow: auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 500px;
+            height: 300px;
+            margin-left: -250px;
+            margin-top: -150px;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        .btn {
+            width: 300px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            margin-left: 100px;
+            border-radius: 0.8em;
+
+        }
+
+        .in {
+            width: 300px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            margin-left: 100px;
+            border-radius: 0.8em;
+            border: 0;
+            outline: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        .btn-left {
+            width: 80px;
+            height: 40px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 1.5em;
+            border: 1px solid white;
+            color: #fefefe;
+            float: left;
+            margin-top: 5px;
+            margin-left: 50px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-right {
+            width: 80px;
+            height: 40px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 1.5em;
+            border: 1px solid white;
+            color: #fefefe;
+            float: right;
+            margin-top: 5px;
+            margin-right: 50px;
+            outline: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div id="login">
+    <form id="login_info">
+        <h3>用户登录</h3>
+        <div>
+            <label><input type="email" name="email" class="in" placeholder="邮箱" required/></label>
+        </div>
+        <br>
+        <div>
+            <label><input type="password" name="password" class="in" placeholder="密码" autocomplete="off"/></label>
+        </div>
+        <br>
+        <div class="btn">
+            <input type="submit" value="确定" class="btn-left" id="commit"/>
+            <input type="reset" value="重置" class="btn-right"/>
+        </div>
+    </form>
+</div>
+<script src="/baixiu/static/assets/vendors/jquery/jquery-3.0.0.js"></script>
+<script src="/baixiu/static/assets/vendors/layer/layer.js"></script>
+<script>
+    $("form").on('submit', function (e) {
+        e.preventDefault()
+        $.ajax({
+            url: './api/login.php',
+            type: 'post',
+            data: $('form').serializeArray(),
+            success: function (result) {
+                if (result == '1') {
+                    window.location.href = 'content.html'
+                } else {
+                    layer.open({
+                        type: 0,
+                        title: '温馨提示',
+                        icon: 2,
+                        content: '登录失败'
+                    });
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

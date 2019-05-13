@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/baixiu/static/assets/vendors/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/baixiu/static/assets/css/style-nav.css" rel="stylesheet">
+
+    <title>内容</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 1130px;
+            margin: 0 auto;
+        }
+
+        .nav {
+            float: left;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        #lohas {
+            width: 1130px;
+            margin: 0px auto;
+            overflow: auto; /*清除子元素的浮动*/
+            box-sizing: content-box;
+        }
+
+        #lohas li {
+            list-style: none;
+            width: 260px;
+            height: 260px;
+            float: left;
+            margin-right: 30px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        #lohas li img {
+            width: 260px;
+            height: 260px;
+        }
+
+        #lohas li .txtBox {
+            width: 260px;
+            height: 260px;
+            background: url("static/assets/img/lineBg.png");
+            padding: 10px;
+            transform: translateY(0px) rotate(130deg); /*css3位移*/
+            transition: all 1S; /*过渡*/
+            overflow: hidden;
+        }
+
+        #lohas li:hover .txtBox {
+            transform: translateY(-265px) rotate(360deg); /*css 位移*/
+        }
+
+        #lohas li .txtBox .post_box {
+            background: #fff;
+            width: 240px;
+            height: 240px;
+            display: block;
+            text-align: center;
+            padding: 20px 30px 0px 30px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        #lohas li .txtBox a h3 {
+            width: 180px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 18px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        #lohas li .txtBox a span {
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #lohas li .txtBox a h4 {
+            float: left;
+            color: #2980b9;
+            font-size: 14px;
+        }
+
+
+        #lohas li .txtBox a .content {
+            width: 180px;
+            font-size: 14px;
+            text-align: left;
+            margin-top: 10px;
+            height: 98px;
+            overflow: hidden;
+        }
+
+        #lohas li:nth-child(4n) {
+            margin-right: 0px;
+        }
+
+        .active{
+            background-color: #1abc9c !important;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <ul id="breadcrumb"></ul>
+    </div>
+    <ul class="pagination pagination-sm pull-right" id="twbsPagination"></ul>
+    <div id="lohas"></div>
+</div>
+<script src="/baixiu/static/assets/vendors/jquery/jquery-3.0.0.js"></script>
+<script src="/baixiu/static/assets/vendors/jsrender/jsrender.js"></script>
+<script src="/baixiu/static/assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+
+<script id="nav" type="text/x-jsrender">
+    {{for category}}
+        <li><a class="category" data-category="{{:id}}"> {{:name}}</a></li>
+    {{/for}}
+
+</script>
+
+<script id="post" type="text/x-jsrender">
+    <ul>
+        {{for posts}}
+            <li>
+                <a href="#"><img src="/baixiu/static/assets/img/{{:id%41}}.jpg"/></a>
+                <div class="txtBox">
+                    <a href="post.html?id={{:id}}" class="post_box">
+                        <h3>{{:title}}</h3>
+                        <div class="content">{{:content}}</div>
+                        <span>……</span>
+                        <h4>查看全文→</h4>
+                    </a>
+                </div>
+            </li>
+        {{/for}}
+    </ul>
+
+</script>
+
+<script>
+    //默认请求的文章分类和页码
+    var category = 1
+    var page = 1
+    //总页数
+    var totalPage = 0;
+
+    var $category
+    $(function () {
+        //获取导航条内容
+        $.get('./api/getCategory.php', {}, function (data) {
+            var html = $("#nav").render({category: data})
+            $("#breadcrumb").html(html)
+
+            //给导航条绑定事件
+            $category = $('.category')
+            $category.on('click',function () {
+                var category_id = $(this).data('category')
+                $category.each(function () {
+                    $(this).removeClass('active')
+                })
+                $(this).addClass('active')
+                category = category_id
+                getPosts(category,page)
+            })
+        })
+
+        getPosts(category,page)
+    })
+
+    //获取首页内容
+    function getPosts(category, page) {
+        $.get('./api/getPosts.php', {
+            'category': category,
+            'page': page
+        }, function (data) {
+
+            //去除富文本编辑器的HTML标签
+            data['post'].forEach(function (currentValue) {
+                currentValue['content'] = currentValue['content'].replace(/<[^>]+>/g,"")
+            })
+            var html = $("#post").render({posts: data['post']})
+            $("#lohas").html(html)
+            totalPage = data['totalPage']
+            $('#twbsPagination').twbsPagination({
+                totalPages: totalPage,
+                visiblePages: 5,
+                first: "首页",
+                prev: "上一页",
+                next: "下一页",
+                last: "末页",
+                loop: false,
+                onPageClick: function (event, index) {
+                    page = index
+                    getPosts(category,page)
+                }
+            })
+        })
+    }
+
+</script>
+</body>
+</html>
